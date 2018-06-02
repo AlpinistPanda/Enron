@@ -8,4 +8,6 @@ Enron Scandal is one of the biggest financial scandals happened in the US which 
 
 I did this project using Ipython of Jupyter notebook, so all the visuals and narrative is in that document. Here I only give a brief instruction on how to work the Python file.
 
-Since I used Ipython my file is very linear and messy I didnt want to spend time on correcting that file which is poi_id.py . I used Anaconda virtual environment with Python 3, I corrected print statements so that I can work in Python 3. So to work on these file grader needs either Python 3 environment or needs to get rid of the parentheses from the print statements. 
+Since I used Ipython my file is very linear and messy I didnt want to spend time on correcting that file which is _poi_id.py_ . I used Anaconda virtual environment with Python 3, I corrected print statements so that I can work in Python 3. So to work on these file grader needs either Python 3 environment or needs to get rid of the parentheses from the print statements. 
+
+The jupyter notbebook file is enron.ipynb.

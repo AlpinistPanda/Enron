@@ -4137,15 +4137,15 @@ to\_rate -\textgreater{} from\_poi\_to\_this\_person / to messages
     \subsection{Ada Boost}\label{ada-boost}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{tester}\PY{o}{.}\PY{n}{test\PYZus{}classifier}\PY{p}{(}\PY{n}{adaBoostClass}\PY{p}{,} \PY{n}{data\PYZus{}dict}\PY{p}{,} \PY{n}{feature3}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}89}]:} \PY{n}{tester}\PY{o}{.}\PY{n}{test\PYZus{}classifier}\PY{p}{(}\PY{n}{adaBoostClass}\PY{p}{,} \PY{n}{data\PYZus{}dict}\PY{p}{,} \PY{n}{feature3}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
 AdaBoostClassifier(algorithm='SAMME.R', base\_estimator=None,
           learning\_rate=1.0, n\_estimators=50, random\_state=None)
-	Accuracy: 0.83721	Precision: 0.40439	Recall: 0.29500	F1: 0.34114	F2: 0.31187
-	Total predictions: 14000	True positives:  590	False positives:  869	False negatives: 1410	True negatives: 11131
+	Accuracy: 0.83729	Precision: 0.40466	Recall: 0.29500	F1: 0.34124	F2: 0.31191
+	Total predictions: 14000	True positives:  590	False positives:  868	False negatives: 1410	True negatives: 11132
 
 
     \end{Verbatim}
@@ -4348,8 +4348,28 @@ Recall & 0.18 & 0.23 & 0.53\tabularnewline
     Again this step didnt change the situation much, we even saw some fall
 in Ada Boost. So we should continue.
 
-    \subsection{5th Stage - feature
-scalars}\label{th-stage---feature-scalars}
+    \subsection{5th Stage - Feature
+Scaling}\label{th-stage---feature-scaling}
+
+    We should use feature scaling to increase the accuracy, as mentioned in
+documentation of StandartScaler object in scikit.
+http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+
+\begin{quote}
+For instance many elements used in the objective function of a learning
+algorithm (such as the RBF kernel of Support Vector Machines or the L1
+and L2 regularizers of linear models) assume that all features are
+centered around 0 and have variance in the same order. If a feature has
+a variance that is orders of magnitude larger that others, it might
+dominate the objective function and make the estimator unable to learn
+from other features correctly as expected.
+\end{quote}
+
+More info is on this paper;
+https://www.csie.ntu.edu.tw/\textasciitilde{}cjlin/papers/guide/guide.pdf
+
+Examples were in this website,
+http://scikit-learn.org/stable/auto\_examples/ensemble/plot\_forest\_importances.html
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}86}]:} \PY{k}{def} \PY{n+nf}{feature\PYZus{}scalars}\PY{p}{(}\PY{n}{d}\PY{p}{,} \PY{n}{features\PYZus{}list}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}\PY{p}{:}
@@ -4708,8 +4728,8 @@ of labelled entities.
 This was a very hard assignment which took months of work and I wathced
 every lecture at least twice. And there were so many possibilities or
 options to do this work. But because of time constraints and me being a
-noob in the area gave me this work. Some of the codes, I checked parts
-online, as there are many scikit examples online. The only
+noob in the area gave me this work. Some of the codes parts I checked
+from the web, as there are many scikit examples online. The only
 dissapointment was I wasnt very succesful in using DataFrames in scikit.
 Also there was some time observations I have made such as Ada being very
 slow and SVC being quite efficient. So I am also happy about the results

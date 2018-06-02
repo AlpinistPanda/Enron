@@ -2,9 +2,8 @@
 
 import sys
 import pickle
-sys.path.append("../tools/")
+sys.path.append("./tools/")
 
-from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
 import sys
@@ -29,6 +28,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
+
 from sklearn.feature_selection import RFECV
 from sklearn.datasets import make_classification
 
@@ -64,35 +64,13 @@ for person in data_dict:
             n += 1
     missingValues[person] = n
 
-# Checking this, we notice some notice entity, The Travel Agency in the Park, so that is probably not a person. So I decided to remove that as well.
-
-# In[13]:
-
+# Remove unnecessary ones
 
 data_dict.pop('THE TRAVEL AGENCY IN THE PARK', None)
-
-
-# Lockhart Eugene has all its information missing so we can safely remove that as well.
-
-# In[14]:
-
-
 data_dict.pop("LOCKHART EUGENE E", None)
-
-
-# At this step, I also decided to get rid of 3 more entities with 18 missing information, I was going to remove others as well but then I decided to stop here as missing information might be an indicator about the involvement as well. Again I dont have any idea about the missing data whether there is no data on hand or that data is not applicable to the person.
-
-# In[15]:
-
-
 data_dict.pop('WHALEY DAVID A', None)
 data_dict.pop('WROBEL BRUCE', None)
 data_dict.pop('GRAMM WENDY L', None)
-
-
-# I am happy with the set of people I have on hand at this stage, but I need to do the same study for all the data in question to see if it can be used as a feature.
-
-# In[16]:
 
 
 missingData = {}
@@ -103,7 +81,6 @@ for person in data_dict:
                 missingData[key] += 1
             else:
                 missingData[key] = 1
-missingData
 
 
 fieldsToRemove = [
@@ -123,6 +100,9 @@ fieldsToRemove = [
     "total_stock_value"
 ]
 
+
+# Give 0 for missing data
+
 for field in fieldsToRemove:
     for person in data_dict:
         if data_dict[person][field] == "NaN":
@@ -131,9 +111,6 @@ for field in fieldsToRemove:
 
 # Extract features and labels from dataset for local testing
 dataPD = pd.DataFrame(data_dict)
-
-
-# In[19]:
 
 
 # Transpose
@@ -164,33 +141,26 @@ feature1 = [
     "shared_receipt_with_poi"
 ]
 
+# adaboost
 
-adaBoostClass = AdaBoostClassifier()
-
-
-# In[22]:
-
-
+# adaBoostClass = AdaBoostClassifier()
 import tester
-tester.test_classifier(adaBoostClass, data_dict, feature1)
+# tester.test_classifier(adaBoostClass, data_dict, feature1)
 
 
 # ## Naive Bayes
 
-# In[27]:
 
-
-naiveBayesClass = GaussianNB()
-tester.test_classifier(naiveBayesClass, data_dict, feature1)
+# naiveBayesClass = GaussianNB()
+# tester.test_classifier(naiveBayesClass, data_dict, feature1)
 
 
 # ## SVC
 
-# In[28]:
 
 
 SVCClass = SVC(kernel='linear', max_iter=1000)
-tester.test_classifier(SVCClass, data_dict, feature1)
+# tester.test_classifier(SVCClass, data_dict, feature1)
 
 
 feature2 = [
@@ -213,11 +183,11 @@ feature2 = [
 ]
 
 
-tester.test_classifier(adaBoostClass, data_dict, feature2)
+# tester.test_classifier(adaBoostClass, data_dict, feature2)
 
-tester.test_classifier(naiveBayesClass, data_dict, feature2)
+# tester.test_classifier(naiveBayesClass, data_dict, feature2)
 
-tester.test_classifier(SVCClass, data_dict, feature2)
+# tester.test_classifier(SVCClass, data_dict, feature2)
 
 # Task 4: Try a varity of classifiers
 # Please name your classifier clf for easy export below.
@@ -340,9 +310,11 @@ def kbest(data_dict, features_list):
     feature_scores_pvalues = ['%.3f' % elem for elem in k_best.pvalues_]
 
     # Create an array of feature names, scores and pvalues
-    k_features = [(features_list[i+1],
+    k_features = [
+        (features_list[i+1],
                    scores[i],
-                   feature_scores_pvalues[i]) for i in k_best.get_support(indices=True)]
+                   feature_scores_pvalues[i])
+            for i in k_best.get_support(indices=True)]
 
     # Sort the array by score
     k_features = sorted(k_features, key=lambda f: float(f[1]))
@@ -351,7 +323,7 @@ def kbest(data_dict, features_list):
     return None
 
 
-kbest(data_dict, feature1)
+# kbest(data_dict, feature1)
 
 
 featuresKBest = [
@@ -369,15 +341,15 @@ featuresKBest = [
 ]
 
 
-tester.test_classifier(adaBoostClass, data_dict, featuresKBest)
+# tester.test_classifier(adaBoostClass, data_dict, featuresKBest)
 
 
-tester.test_classifier(naiveBayesClass, data_dict, featuresKBest)
+# tester.test_classifier(naiveBayesClass, data_dict, featuresKBest)
 
 
 
 
-tester.test_classifier(SVCClass, data_dict, featuresKBest)
+# tester.test_classifier(SVCClass, data_dict, featuresKBest)
 
 # Task 5: Tune your classifier to achieve better than .3 precision and recall
 # using our testing script. Check the tester.py script in the final project
@@ -425,7 +397,7 @@ def feature_scalars(d, features_list, test_size, random_state=42):
     return None
 
 
-feature_scalars(data_dict, feature3, 0.35)
+#feature_scalars(data_dict, feature3, 0.35)
 
 
 feature4SVC = [
@@ -452,8 +424,8 @@ feature4SVC = [
 ]
 
 
-clf_SVC = SVC(kernel='linear', max_iter=1000)
-tester.test_classifier(clf_SVC, data_dict, feature4SVC)
+# clf_SVC = SVC(kernel='linear', max_iter=1000)
+# tester.test_classifier(clf_SVC, data_dict, feature4SVC)
 
 
 def tune_SVC(d, features_list, scaler=True):
@@ -481,7 +453,7 @@ def tune_SVC(d, features_list, scaler=True):
     return None
 
 
-tune_SVC(data_dict, feature4SVC)
+# tune_SVC(data_dict, feature4SVC)
 
 
 def get_svc(d, features_list):
@@ -508,15 +480,7 @@ def get_svc(d, features_list):
 
     return svm_clf
 
-    my_clf = get_svc(data_dict, feature4SVC)
-    my_dataset = data_dict
-    my_features = feature4SVC
 
-    dump_classifier_and_data(my_clf, my_dataset, my_features)
-
-    test_clf(data_dict, feature4SVC, random_state=42)
-
-    # In[61]:
 
 
 def test_clf(d, features_list, random_state=42):
@@ -555,6 +519,7 @@ def test_clf(d, features_list, random_state=42):
         print("\n")
 
     return
+
 # Example starting point. Try investigating other evaluation techniques!
 
 # Task 6: Dump your classifier, dataset, and features_list so anyone can
@@ -562,5 +527,11 @@ def test_clf(d, features_list, random_state=42):
 # that the version of poi_id.py that you submit can be run on its own and
 # generates the necessary .pkl files for validating your results.
 
+my_classifier = get_svc(data_dict, feature4SVC)
+my_dataset = data_dict
+my_feature_list = feature4SVC
 
-# dump_classifier_and_data(clf, my_dataset, features_list)
+dump_classifier_and_data(my_classifier, my_dataset, my_feature_list)
+
+test_clf(data_dict, feature4SVC, random_state=42)
+
